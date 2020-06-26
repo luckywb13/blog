@@ -27,7 +27,7 @@ func main() {
 
 	defer func() {
 		models.Close()
-		//log.DestroyLogger()
+		log.DestroyLogger()
 	}()
 
 	if err = server.NewServer(c.ServerConf).Run(); err != nil {
