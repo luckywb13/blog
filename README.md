@@ -1,8 +1,11 @@
 blog
 ==============
-`luckywb13/blog` gin写的个人博客,db为mysql(v>=5.6)
+`luckywb13/blog` gin写的个人博客,db为mysql(v>=5.6),前端小白,将就能用
+
 
 ---------------------------------------
+##地址:
+https://www.luckywb.com
 
 ## 编译
 ```sh
@@ -31,5 +34,6 @@ $ ./main -debug=false -conf=app.yaml
 
 留言版引用畅言平台, 需要注册并且审核备案号后获取信息
 
-####更多
+
+##更多
 TODO
