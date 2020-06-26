@@ -33,7 +33,3 @@ $ ./main -debug=false -conf=app.yaml
 后台初始账号:admin@qq.com 密码:123456
 
 留言版引用畅言平台, 需要注册并且审核备案号后获取信息
-
-
-##更多
-TODO
