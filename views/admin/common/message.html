@@ -1,0 +1,26 @@
+{{define "message"}}
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModal"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                提示
+            </div>
+            <div class="modal-body">
+                <span id="message"></span>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger btn-ok" id="btnMessageOk">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = function () {
+        $("#btnMessageOk").click(function () {
+            $("#messageModal").modal('hide');
+        })
+    }
+
+</script>
+{{end}}

@@ -1,0 +1,106 @@
+{{define "blog/talk/index.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.title}}</title>
+</head>
+
+<link href="/static/plugin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/static/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/moodList.css"/>
+<link rel="stylesheet" href="/static/plugin/jquery/css/jquery.page.css">
+<link href="/static/img/logo.ico" rel="shortcut icon"/>
+
+
+<body>
+{{template "header.html" .}}
+<div class="w_container">
+    <div class="container">
+        <div class="row w_main_row">
+            <ol class="breadcrumb w_breadcrumb">
+                <li><a href="/home/index">首页</a></li>
+                <li class="active">说说</li>
+                <span class="w_navbar_tip">删删写写，回回忆忆，虽无法行云流水，却也可碎言碎语</span>
+            </ol>
+
+
+            <div class="bloglist">
+                <ul class="arrow_box">
+                    <div class="sy">
+                        <img src="/static/img/slider/bb.jpg">
+                        <p> 我希望我的爱情是这样的，相濡以沫，举案齐眉，平淡如水。</p>
+                    </div>
+                    <!--<p class="bloglist_count"><span class="count"><i class="glyphicon glyphicon-user"></i><a href="#">admin</a></span> <span class="count"><i class="glyphicon glyphicon-eye-open"></i>阅读:22</span><span class="count"><i class="glyphicon glyphicon-comment"></i>评论:0</span></p>-->
+                    <span class="dateview">2017-02-07</span>
+                </ul>
+            </div>
+
+
+            <div id="page">
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+{{template "footer.html"}}
+<!--toTop-->
+<div id="shape">
+    <div class="shapeColor">
+        <div class="shapeFly">
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
+<script src="/static/plugin/jquery/js/jquery.min.js"></script>
+<script src="/static/plugin/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/plugin/jquery/js/jquery.page.js"></script>
+<script src="/static/js/common.js"></script>
+
+<script type="text/javascript">
+
+    $(function () {
+        $("#page").Page({
+            totalPages: parseInt("{{.total}}"),//分页总数
+            liNums: 5,//分页的数字按钮数(建议取奇数)
+            activeClass: 'activP', //active 类样式定义
+            callBack: function (page) {
+                getData(page);
+            }
+        });
+
+        getData(1);
+
+        function getData(pageIndex) {
+            $.ajax({
+                type: "get",
+                url: "/talk/getList?page_index=" + pageIndex + "&page_size=10",
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    var list = data.data;
+                    var html = '';
+                    for (var i = 0; i < list.length; i++)
+                    {
+                        html += '<ul class="arrow_box"><div class="sy"><div class="sy">';
+                        if (list[i].Icon != "") {
+                            html += '<img src="' + list[i].Icon + '">'
+                        }
+                        html += "<p>" + list[i].Content + '</p></div><span class="dateview">' + list[i].CreatedAt.substring(0, 10) + '</span></ul>'
+                    }
+                    $('.bloglist').html(html)
+                },
+                error : function()
+                {
+                    alert("请求超时，请重试！");
+                }
+            })};
+    });
+</script>
+
+{{end}}

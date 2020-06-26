@@ -1,0 +1,237 @@
+{{define "admin/talk/index.html"}}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{.title}}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="/static/plugin/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/plugin/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/static/plugin/Ionicons/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/static/plugin/bootstrap/css/dataTables.bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/static/plugin/AdminLTE/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/static/plugin/AdminLTE/css/skins/_all-skins.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+{{template "navbar.html" .}}
+{{template "sidebar.html" .}}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                <small><a class="btn btn-primary" href="/admin/talk/add"><span class="glyphicon glyphicon-plus"></span>新增</a>
+                </small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="/admin/article/index"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active"><a href="#">说说列表</a></li>
+
+            </ol>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-body">
+                            <table id="mytable" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>标题</th>
+                                    <th>状态</th>
+                                    <th>创建时间</th>
+                                    <th>更新时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <input type="hidden" id="hiId" value="0">
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                请确认
+            </div>
+            <div class="modal-body">
+                确认删除吗？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button class="btn btn-danger btn-ok" id="btnDeleteOK">删除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{{template "message" .}}
+<!-- jQuery 3 -->
+<script src="/static/plugin/jquery/js/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/static/plugin/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/static/plugin/jquery/js/jquery.dataTables.min.js"></script>
+<script src="/static/plugin/bootstrap/js/dataTables.bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/plugin/AdminLTE/js/adminlte.min.js"></script>
+<script src="/static/js/common.js"></script>
+<!-- page script -->
+<script>
+    $(function () {
+        $('#mytable').dataTable().fnDestroy();
+        $('#mytable').DataTable({
+            language: {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+            },
+            ordering: false,
+            bFilter : false,
+            processing: true,
+            bPaginate: true,
+            serverSide: true,
+
+            ajax: function (data, callback, settings) {
+                //封装请求参数
+                var param = {};
+                param.page_size = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+                param.start = data.start;//开始的记录序号
+                param.page_index = (data.start / data.length)+1;//当前页码
+                $.ajax({
+                    type: "GET",
+                    url: "/admin/talk/getList",
+                    cache: false,
+                    data: param,
+                    dataType: "json",
+                    success: function (result) {
+                        setTimeout(function () {
+                            var returnData = {};
+                            returnData.draw = data.draw;
+                            returnData.recordsTotal = result.data.total;
+                            returnData.recordsFiltered = result.data.total;
+                            returnData.data = result.data.list;
+                            callback(returnData);
+                        }, 200);
+                    }
+                });
+            },
+            "aoColumns" : [//初始化要显示的列
+                {
+                    "mDataProp" : "ID"
+                },
+                {
+                    "mDataProp" : "Title"
+                },
+                {
+                    "mDataProp" : "Status",
+                    "mRender" : function(data) {
+                        if (data == 1) {
+                            return "正常";
+                        }
+                        return "删除";
+                    }
+
+                },
+                {
+                    "mDataProp" : "CreatedAt",
+                    "mRender" : function(data) {
+                        return new Date(data)//处理时间显示
+                            .toLocaleString();
+                    }
+                },
+                {
+                    "mDataProp" : "UpdatedAt",
+                    "mRender" : function(data) {
+                        return new Date(data)//处理时间显示
+                            .toLocaleString();
+                    }
+                },
+                {
+                    "mDataProp" : "Status",
+                    "mRender" : function(data, type, row, meta) {
+                        if (data != 1) {
+                            return '';
+                        }
+                        return '<a type="button" href="/admin/talk/edit?id=' + row.ID + '" style="padding:3px 6px" class="btn btn-mini btn-primary btnEdit">编辑</a>' +
+                         '<button type="button" data-id="'+ row.ID +'" style="padding:3px 6px"  class="btn btn-danger  btnDelete">删除</button>';
+                    }
+                },
+            ],
+        });
+
+        $('#mytable').on('click', '.btnDelete', function (e) {
+            id = $(this).attr("data-id");
+            $("#hiId").val(id);
+            $("#deleteModal").modal("show");
+        });
+
+
+        $("#btnDeleteOK").click(function () {
+            talkid = $("#hiId").val();
+            $("#hiId").val('');
+            $.post("/admin/talk/delete",
+                    {
+                        id: talkid
+                    },
+                    function (data) {
+                        $("#deleteModal").modal("hide");
+                        if (data.code == 200) {
+                            window.location.href = "/admin/talk/index"
+                        } else {
+                            showMessage(data.msg);
+                        }
+                    },
+                    "json")
+        })
+    });
+</script>
+</body>
+</html>
+{{end}}

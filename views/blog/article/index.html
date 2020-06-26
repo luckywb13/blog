@@ -1,0 +1,263 @@
+{{define "blog/home/index.html"}}
+	<!DOCTYPE html>
+	<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>{{.title}}</title>
+	</head>
+
+	<link href="/static/plugin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/static/css/common.css" />
+	<link href="/static/img/logo.ico" rel="shortcut icon" />
+	<script src="/static/plugin/jquery/js/jquery.min.js"></script>
+	<script src="/static/plugin/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="/static/plugin/jquery/css/jquery.page.css">
+
+	<body>
+	{{template "header.html" .}}
+	<div class="w_container">
+		<div class="container">
+			<div class="row w_main_row">
+				<div class="col-lg-9 col-md-9 w_main_left">
+					<!--滚动图开始-->
+					<div class="panel panel-default">
+
+						<div id="w_carousel" class="carousel slide w_carousel" data-ride="carousel">
+							<ol class="carousel-indicators">
+								<li data-target="#w_carousel" data-slide-to="0" class="active"></li>
+								<li data-target="#w_carousel" data-slide-to="1"></li>
+								<li data-target="#w_carousel" data-slide-to="2"></li>
+								<li data-target="#w_carousel" data-slide-to="3"></li>
+							</ol>
+							<div class="carousel-inner" role="listbox">
+								<div class="item active">
+									<img src="/static/img/slider/slide1.jpg" alt="...">
+									<div class="carousel-caption">
+									</div>
+								</div>
+								<div class="item">
+									<img src="/static/img/slider/slide2.jpg" alt="...">
+									<div class="carousel-caption">
+									</div>
+								</div>
+								<div class="item">
+									<img src="/static/img/slider/slide3.jpg" alt="...">
+									<div class="carousel-caption">...</div>
+								</div>
+								<div class="item">
+									<img src="/static/img/slider/slide4.jpg" alt="...">
+									<div class="carousel-caption">...</div>
+								</div>
+							</div>
+
+							<!-- Controls -->
+							<a class="left carousel-control" href="#w_carousel" role="button" data-slide="prev">
+								<span class="glyphicon glyphicon-chevron-left"></span>
+								<span class="sr-only">Previous</span>
+							</a>
+							<a class="right carousel-control" href="#w_carousel" role="button" data-slide="next">
+								<span class="glyphicon glyphicon-chevron-right"></span>
+								<span class="sr-only">Next</span>
+							</a>
+						</div>
+
+					</div>
+
+					<div class="panel panel-default contenttop">
+						<a href="/article/detail?id={{.top.ID}}">
+							<strong>博主置顶</strong>
+							<h3 class="title">{{.top.Title}}</h3>
+							<p class="overView">{{.top.Depiction}}</p>
+						</a>
+					</div>
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">文章列表</h3>
+						</div>
+
+						<div class="panel-body">
+
+							<!--文章列表开始-->
+							<div class="contentList">
+
+							</div>
+							<!--文章列表结束-->
+							<div id="page">
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!--左侧开始-->
+				<div class="col-lg-3 col-md-3 w_main_right">
+
+					<div class="panel panel-default sitetip">
+						<a>
+							<strong>站点公告</strong>
+							<h3 class="title">个人博客</h3>
+							<p class="overView">本博客在gin框架基础上编写，属个人所有，不涉及商业目的，本博客所有文章转载时请标注作者与来源.非经允许，不得用于赢利目的.</p>
+						</a>
+					</div>
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">文章分类</h3>
+						</div>
+						<div class="panel-body">
+							<ul class="list-unstyled sidebar">
+								{{range .categoryList}}
+									<li style="border-bottom:0px">
+										<a class="label label-default articleType" data-id={{.ID}}>{{.Name}}</a>
+									</li>
+								{{end}}
+							</ul>
+						</div>
+					</div>
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">最新发布</h3>
+						</div>
+						<div class="panel-body">
+							<ul class="list-unstyled sidebar">
+								{{range .articles}}
+									<li>
+										<a href="/article/detail?id={{.ID}}">{{.Title}}</a>
+									</li>
+								{{end}}
+							</ul>
+						</div>
+					</div>
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">友情链接</h3>
+						</div>
+						<div class="panel-body">
+							<div class="newContent">
+								<ul class="list-unstyled sidebar shiplink">
+									<li>
+										<a href="https://www.baidu.com/" target="_blank">百度</a>
+									</li>
+									<li>
+										<a href="https://cn.bing.com/" target="_blank">必应</a>
+									</li>
+									<li>
+										<a href="https://www.oschina.net/" target="_blank">开源中国</a>
+									</li>
+									<li>
+										<a href="https://www.csdn.net/" target="_blank">CSDN</a>
+									</li>
+									<li>
+										<a href="http://www.sina.com.cn/" target="_blank">新浪网</a>
+									</li>
+									<li>
+										<a href="http://www.qq.com/" target="_blank">腾讯网</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="category_id">
+	{{template "footer.html"}}
+	</body>
+	</html>
+	<script src="/static/plugin/jquery/js/jquery.min.js"></script>
+	<script src="/static/plugin/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/static/plugin/jquery/js/jquery.page.js"></script>
+	<script src="/static/js/common.js"></script>
+	<script type="text/javascript">
+		var $backToTopEle = $('<a href="javascript:void(0)" class="Hui-iconfont toTop" title="返回顶部" alt="返回顶部" style="display:none">^</a>').appendTo($("body")).click(function() {
+			$("html, body").animate({ scrollTop: 0 }, 120);
+		});
+		var backToTopFun = function() {
+			var st = $(document).scrollTop(),
+					winh = $(window).height();
+			(st > 0) ? $backToTopEle.show(): $backToTopEle.hide();
+			/*IE6下的定位*/
+			if(!window.XMLHttpRequest) {
+				$backToTopEle.css("top", st + winh - 166);
+			}
+		};
+
+		$(function () {
+
+			$(".articleType").click(function(){
+				$("#category_id").val($(this).attr("data-id"));
+				getData(1, $(this).attr("data-id"))
+			})
+
+			$(window).on("scroll", backToTopFun);
+			backToTopFun();
+
+			$("#page").Page({
+				totalPages: parseInt("{{.total}}"),//分页总数
+				liNums: 5,//分页的数字按钮数(建议取奇数)
+				activeClass: 'activP', //active 类样式定义
+				callBack: function (page) {
+					getData(page, $("#category_id").val());
+				}
+			});
+
+			getData(1, 0);
+
+			function getData(pageIndex, category_id) {
+				$.ajax({
+					type: "get",
+					url: "/article/getList?page_index=" + pageIndex + "&category_id=" + category_id + "&page_size=5",
+					async: false,
+					dataType: "json",
+					success: function (data) {
+						var list = data.data;
+						if(list.length == 0) {
+							$('.contentList').html("暂无数据");
+							return;
+						}
+
+						var html = '';
+						for (var i = 0; i < list.length; i++)
+						{
+							html += '<div class="panel panel-default">' +
+									'<div class="panel-body">' +
+									'<div class="contentleft">' +
+									' <h4><a class="title" href="/article/detail?id=' + list[i].ID + '">' + list[i].Title +'</a></h4>' +
+									'<p>' +
+									'<a class="label label-default">' + list[i].CategoryName + '</a>' +
+									'</p>' +
+									'<p class="overView">' + list[i].Depiction + '</p>' +
+									'<p><span class="count">' +
+									'<i class="glyphicon glyphicon-user"></i>' +
+									'<a href="#">admin</a></span>' +
+									'<span class="count">' +
+									'<i class="glyphicon glyphicon-eye-open"></i>阅读:' + list[i].ReadNum + '</span><span class="count"><i class="glyphicon glyphicon-comment"></i>评论:' + list[i].CommentNum + '</span><span class="count"><i class="glyphicon glyphicon-time"></i>' + list[i].UpdatedAt.substring(0, 10) + '</span></p>' +
+									'</div>'
+							if (list[i].Image != "") {
+								html += '<div class="contentImage">' +
+										'<div class="row">' +
+										'<a href="#" class="thumbnail w_thumbnail">' +
+										'<img src="' + list[i].Image + '">' +
+										'</a>' +
+										'</div>' +
+										'</div>'
+							}
+							html += '</div>'
+							html += '</div>'
+						}
+						$('.contentList').html(html)
+					},
+					error : function()
+					{
+						alert("请求超时，请重试！");
+					}
+				})};
+
+		});
+	</script>
+{{end}}

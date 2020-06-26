@@ -1,0 +1,266 @@
+{{define "admin/category/index.html"}}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{.title}}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="/static/plugin/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/plugin/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/static/plugin/Ionicons/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/static/plugin/bootstrap/css/dataTables.bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/static/plugin/AdminLTE/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/static/plugin/AdminLTE/css/skins/_all-skins.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper">
+{{template "navbar.html" .}}
+{{template "sidebar.html" .}}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                <small><a class="btn btn-primary" id="btnAdd"><span class="glyphicon glyphicon-plus"></span>新增</a>
+                </small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="/admin/article/index"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active"><a href="#">分类管理</a></li>
+            </ol>
+        </section>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-body">
+                            <table id="mytable" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>名称</th>
+                                    <th>状态</th>
+                                    <th>创建时间</th>
+                                    <th>更新时间</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {{range .data}}
+                                <tr>
+                                    <td>{{.ID}}</td>
+                                    <td>{{.Name}}</td>
+                                    <td>{{if eq .Status 1}}正常{{else}}删除{{end}}</td>
+                                    <td>{{dateFormat .CreatedAt "2006-01-02 15:04"}}</td>
+                                    <td>{{dateFormat .UpdatedAt "2006-01-02 15:04"}}</td>
+                                    <td>
+                                    {{if eq .Status 1}}
+                                        <button type="button" data-id="{{.ID}}" data-name="{{.Name}}" style="padding:3px 6px" class="btn btn-mini btn-primary btnEdit">
+                                            编辑
+                                        </button>
+                                        <button type="button" data-id="{{.ID}}" data-name="{{.Name}}" style="padding:3px 6px"  class="btn btn-danger  btnDelete">
+                                            删除
+                                        </button>
+                                                {{end}}
+                                    </td>
+                                </tr>
+                                {{end}}
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <input type="hidden" id="hiId" value="0">
+</div>
+<!-- ./wrapper -->
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                请确认
+            </div>
+            <div class="modal-body">
+                确认删除名称为<span id="sCategoryName" style="color: red"></span>的分类名称吗？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button class="btn btn-danger btn-ok" id="btnDeleteOK">删除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                编辑分类
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">名称</label>
+                {{/*<div class="col-sm-10">*/}}
+                    <input type="text" class="form-control" id="name"
+                           placeholder="名称">
+                {{/*</div>*/}}
+                </div>
+
+                <span id="sInfo" style="text-align: center;font-style: initial;color: red;" class="help-block"></span>
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button class="btn btn-danger btn-ok" id="btnOK">确定</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{{template "message" .}}
+<!-- jQuery 3 -->
+<script src="/static/plugin/jquery/js/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/static/plugin/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="/static/plugin/jquery/js/jquery.dataTables.min.js"></script>
+<script src="/static/plugin/bootstrap/js/dataTables.bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/static/plugin/AdminLTE/js/adminlte.min.js"></script>
+<script src="/static/js/common.js"></script>
+<!-- page script -->
+<script>
+    $(function () {
+        $('#mytable').dataTable().fnDestroy();
+        $('#mytable').DataTable({
+            language: {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                }},
+            ordering: false,
+            bFilter : false,
+        });
+
+
+        $("#btnAdd").click(function () {
+            $("#name").val("");
+            $("#editModal").modal("show")
+        })
+
+        $("#btnOK").click(function () {
+            categoryname = $("#name").val();
+            if ($.trim(categoryname).length <= 0) {
+                $("#name").css("border-color", "#FF0000");
+                $("#sInfo").html("输入正确的分类名称");
+                return false;
+            }
+
+            categoryid = $("#hiId").val();
+            $("#hiId").val('');
+            url = "/admin/category/add";
+            var data = {name: categoryname};
+
+            if (categoryid > 0) {
+                data.id = categoryid;
+                url = "/admin/category/edit";
+            }
+
+            $.post(url,
+                    data,
+                    function (data) {
+                        if (data.code == 200) {
+                            $("#addModal").modal("hide");
+                            location.reload()
+                        } else {
+                            $("#sInfo").html(data.msg);
+                        }
+                    },
+                    "json"
+            )
+        });
+
+        $('#mytable').on('click', '.btnEdit', function (e) {
+            categoryid = $(this).attr("data-id");
+            categoryname = $(this).attr("data-name");
+            $("#hiId").val(categoryid);
+            $("#name").val(categoryname);
+            $("#editModal").modal("show");
+        });
+
+        $('#mytable').on('click', '.btnDelete', function (e) {
+            categoryid = $(this).attr("data-id");
+            categoryname = $(this).attr("data-name");
+            $("#sCategoryName").html(categoryname);
+            $("#hiId").val(categoryid);
+            $("#deleteModal").modal("show");
+        });
+
+
+        $("#btnDeleteOK").click(function () {
+            categoryid = $("#hiId").val();
+            $("#hiId").val('');
+            $.post("/admin/category/delete",
+                    {
+                        id:categoryid
+                    },
+                    function (data) {
+                        $("#deleteModal").modal("hide");
+                        if (data.code == 200) {
+                            location.reload()
+                        } else {
+                            showMessage(data.msg);
+                        }
+                    },
+                    "json")
+        })
+    });
+</script>
+</body>
+</html>
+{{end}}

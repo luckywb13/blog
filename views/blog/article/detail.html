@@ -1,0 +1,224 @@
+{{define "blog/article/detail.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{{.title}}</title>
+</head>
+
+<link href="/static/plugin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/static/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/article_detail.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/main.css"/>
+
+<link href="/static/img/logo.ico" rel="shortcut icon"/>
+<script src="/static/plugin/jquery/js/jquery.min.js"></script>
+<script src="/static/plugin/bootstrap/js/bootstrap.js"></script>
+<link rel="stylesheet" href="/static/plugin/jquery/css/jquery.page.css">
+
+<script src="/static/js/common.js"></script>
+
+<body>
+	{{template "header.html" .}}
+	<div class="w_container">
+		<div class="container">
+			<div class="row w_main_row">
+
+				<ol class="breadcrumb w_breadcrumb">
+				  <li><a href="/home/index">首页</a></li>
+				  <li class="active">我的个人博客之——{{.article.Title}}</li>
+				  <span class="w_navbar_tip">我们长路漫漫，只因学无止境。</span>
+				</ol>
+
+				<div class="col-lg-9 col-md-9 w_main_left">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<h2 class="c_titile">{{.article.Title}}</h2>
+							<p class="box_c"><span class="d_time">发布时间 {{dateFormat .article.CreatedAt "2006-01-02 15:04"}}</span><span>阅读({{.article.ReadNum}})</span></p>
+							<ul class="infos">
+								{{htmlHandler .article.Content}}
+							</ul>
+							<div class="nextinfo">
+								{{range .twos }}
+								{{if eq .Content "s"}}<p class="lasts">上一篇：<a href="/article/detail?id={{.ID}}">{{.Title}}</a></p>{{end}}
+								{{if eq .Content "x"}}<p class="nexts">下一篇：<a href="/article/detail?id={{.ID}}">{{.Title}}</a></p>{{end}}
+								{{end}}
+						    </div>
+						</div>
+					</div>
+
+					<div class="panel panel-default">
+						<!-- <h2 style="text-align:center">{{.article.CommentNum}} thoughts on “Simple Command” </h2> -->
+						<div class="panel-body">
+							<ul class="media-list">
+					        </ul>
+							<div id="page">
+							</div>
+							{{if ne .total 0.0}}<hr>{{end}}
+							<form  class="form-horizontal">
+								 <span style="font-size:28px">发表评论 </span>
+								<div style="padding-top: 10px"><p>电子邮件地址不会被公开。 必填项已用<span style="font-color:red">*</span>标注</p></div>
+								<div class="form-group" style="padding-top: 10px">
+									<div class="col-sm-12">
+										<textarea id="content" class="form-control" placeholder="评论内容" style="height:150px"></textarea>
+									</div>
+								</div>
+								<div class="form-group" style="padding-top: 10px">
+									<div class="col-sm-12">
+										<input type="input" id="name" placeholder="姓名*" style="width:45%; height:40px">
+										<input type="input" id="email" placeholder="电子邮件*" style="width:50%; height:40px">
+									</div>
+								</div>
+
+								<span id="sInfo" style="text-align: center;font-style: initial;color: red;"
+									  class="help-block">{{.msg}}</span>
+								<button type="button" class="btn btn-primary btn-ok" id="btnOK">发表评论</button>
+							</form>
+
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-3 w_main_right">
+
+					<div class="panel panel-default">
+					  <div class="panel-heading">
+					    <h3 class="panel-title">最新发布</h3>
+					  </div>
+					  <div class="panel-body">
+					    	<ul class="list-unstyled sidebar">
+							{{range .articles}}
+								<li><a href="/article/detail?id={{.ID}}">{{.Title}}</a></li>
+							{{end}}
+						</ul>
+					  </div>
+					</div>
+
+					<div class="panel panel-default">
+					  <div class="panel-heading">
+					    <h3 class="panel-title">友情链接</h3>
+					  </div>
+					  <div class="panel-body">
+					    <div class="newContent">
+					    	<ul class="list-unstyled sidebar shiplink">
+								<li><a href="https://www.baidu.com/" target="_blank">百度</a></li>
+								<li><a href="https://www.oschina.net/" target="_blank">开源中国</a></li>
+								<li><a href="http://www.ulewo.com/" target="_blank">有乐网</a></li>
+								<li><a href="http://www.sina.com.cn/" target="_blank">新浪网</a></li>
+								<li><a href="http://www.qq.com/" target="_blank">腾讯网</a></li>
+							</ul>
+					    </div>
+					  </div>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+	{{template "footer.html"}}
+	<div id="shape">
+		<div class="shapeColor">
+			<div class="shapeFly">
+			</div>
+		</div>
+	</div>
+
+	<input type="hidden" id="HIarticle_id" value="{{.article.ID}}">
+</body>
+</html>
+<script type="text/javascript" src="/static/plugin/jquery/js/jquery.page.js"></script>
+
+<script type="text/javascript">
+$(function(){
+	$("#btnOK").click(function(){
+		var content = $("#content").val();
+		var name = $("#name").val();
+		var email = $("#email").val();
+
+		if ($.trim(content).length <= 0) {
+			$("#sInfo").html("输入正确的评论内容");
+			return false
+		}
+
+		if ($.trim(name).length <= 0) {
+			$("#sInfo").html("输入正确的姓名");
+			return false
+		}
+
+		if ($.trim(email).length <= 0) {
+			$("#sInfo").html("输入正确的邮件");
+			return false
+		}
+
+		$.post(
+			"/comment/add",
+			{
+				"article_id" : $("#HIarticle_id").val(),
+				"name":name,
+				"email":email,
+				"content":content
+			},
+			function (data) {
+				if (data.code == 200) {
+					location.reload();
+				} else {
+					$("#sInfo").html(data.msg);
+				}
+
+			},
+			"json"
+		)
+	});
+
+	if (parseInt({{.total}}) > 0) {
+		$("#page").Page({
+			totalPages: parseInt("{{.total}}"),//分页总数
+			liNums: 5,//分页的数字按钮数(建议取奇数)
+			activeClass: 'activP', //active 类样式定义
+			callBack: function (page) {
+				getData(page, $("#HIarticle_id").val());
+			}
+		});
+	}
+
+
+	getData(1, $("#HIarticle_id").val());
+
+	function getData(pageIndex, article_id) {
+		$.ajax({
+			type: "get",
+			url: "/comment/getList?page_index=" + pageIndex + "&article_id=" + article_id +"&page_size=5",
+			async: false,
+			dataType: "json",
+			success: function (data) {
+				var list = data.data;
+
+				var html = '';
+				for (var i = 0; i < list.length; i++)
+				{
+					console.log(list[i])
+					html += ' <li class="media">' +
+						 '<div class="media-left">' +
+							 '<a href="#">' +
+								 '<img class="media-object img-circle" src="/static/img/a.png">' +
+							 '</a>' +
+						 '</div>' +
+						 '<div class="media-body">' +
+							 '<h4 class="media-heading">' + list[i].Name + '</h4>' +
+							 '<p>' + list[i].Content  + '</p>' +
+							 '<div class="ds-comment-footer">' +
+								 '<span class="ds-time">' + list[i].CreatedAt + '</span>' +
+							 '</div>' +
+							 '<hr>' +
+					 '</li>'
+				}
+				$('.media-list').html(html)
+			},
+			error : function()
+			{
+				alert("请求超时，请重试！");
+			}
+		})};
+})
+</script>
+{{end}}

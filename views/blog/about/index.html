@@ -1,0 +1,65 @@
+{{define "blog/about/index.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{{.title}}</title>
+</head>
+
+<link href="/static/plugin/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/static/css/common.css"/>
+<link rel="stylesheet" type="text/css" href="/static/css/about.css"/>
+<link href="logo.ico" rel="shortcut icon"/>
+<script src="/static/plugin/jquery/js/jquery.min.js"></script>
+<script src="/static/plugin/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="/static/plugin/jquery/js/jquery.page.js"></script>
+<script src="/static/js/common.js"></script>
+
+
+<body>
+	{{template "header.html" .}}
+	<div class="w_container">
+		<div class="container">
+			<div class="row w_main_row">
+
+				<ol class="breadcrumb w_breadcrumb">
+				  <li><a href="/home/index">首页</a></li>
+				  <li class="active">关于我</li>
+				  <span class="w_navbar_tip">像“草根”一样，紧贴着地面，低调的存在，冬去春来，枯荣无恙。</span>
+				</ol>
+
+				<div class="col-lg-9 col-md-9 w_main_left" style="height: 1000px;">
+					<div class="about">
+					  <h2>Just about me</h2>
+					    <ul>
+					    	<p>一个写了10年代码的老码农 .net、php、python、golang  10年的码农生活 让我成为了一只加班狗 看到bug不想走!</p>
+					    </ul>
+					  <h2>About my blog</h2>
+					    <ul>
+					    	<p>域  名：www.luckywb.com 创建于2018年09月10日</a></p>
+						    <p>服务器：阿里云ECS</p>
+							<p>上线日期：2018年中秋节<p>
+							<p>备案号：京ICP备18045597号<p>
+							<p>本站为IT技术博客站，博客内容主要涉及编程语言、服务端开发等方面，同时分享实用的开发资料和开发经验。</p>
+					    </ul>
+						<h2>Contact me</h2>
+  					    <ul>
+  					    	<p>qq:260636040</p>
+  						    <p>github:<a href="https://github.com/luckywb13" target="_blank">https://github.com/luckywb13</a></p>
+  						    <p>email:luckywb@foxmail.com<p>
+  					    </ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{template "footer.html"}}
+	<div id="shape">
+		<div class="shapeColor">
+			<div class="shapeFly">
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+{{end}}

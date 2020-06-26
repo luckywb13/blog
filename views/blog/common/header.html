@@ -1,0 +1,24 @@
+{{define "header.html"}}
+<div class="w_header">
+    <div class="container">
+        <div class="w_header_top">
+            <!-- <img src="../static/img/logo.png">-->
+            <a href="#" class="w_logo"></a> 
+            <span class="w_header_nav">
+					<ul>
+						<li><a href="/home/index"  {{if eq .highlight "home"}} class="active" {{end}}>首页</a></li>
+						<li><a href="/about/index"  {{if eq .highlight "about"}} class="active" {{end}}>关于我</a></li>
+						<li><a href="/talk/index"  {{if eq .highlight "talk"}} class="active" {{end}}>点点滴滴</a></li>
+						<li><a href="/comment/index"  {{if eq .highlight "comment"}} class="active" {{end}}>留言板</a></li>
+					</ul>
+				</span>
+            <div class="w_search">
+                <div class="w_searchbox">
+                    <input type="text" placeholder="search" />
+                    <button>搜索</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}

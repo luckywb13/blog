@@ -1,0 +1,86 @@
+{{define "blog/comment/index.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.title}}</title>
+</head>
+
+<!--<script src="js/snowy.js"></script>-->
+<link href="/static/plugin/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/static/css/common.css"/>
+<link href="/static/img/logo.ico" rel="shortcut icon"/>
+<script src="/static/plugin/jquery/js/jquery.min.js"></script>
+<script src="/static/plugin/bootstrap/js/bootstrap.js"></script>
+<script type="text/javascript" src="/static/plugin/jquery/js/jquery.page.js"></script>
+<script src="/static/js/common.js"></script>
+
+
+<body>
+{{template "header.html" .}}
+<div class="w_container">
+    <div class="container">
+        <div class="row w_main_row">
+            <ol class="breadcrumb w_breadcrumb">
+                <li><a href="/home/index">首页</a></li>
+                <li class="active">评论</li>
+                <span class="w_navbar_tip">你，生命中最重要的过客，之所以是过客，因为你未曾为我停留。</span>
+            </ol>
+
+            <div class="col-lg-9 col-md-9 w_main_left">
+
+
+
+                <!--PC版-->
+                <div id="SOHUCS" sid="2f86102b2d88c72370bc9244f993a86a"></div>
+                <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+                <script type="text/javascript">
+                window.changyan.api.config({
+                    appid: 'cytPeoIyk',
+                    conf: 'prod_3f8cfddeb0eba7771e511d133c2b2a3a'
+                });
+                </script>
+
+                <!-- 多说评论框 start -->
+                <!-- <div class="ds-thread" data-thread-key="5eab7e4c363e4cb8bed0efa3604e6b42" data-title="请替换成文章的标题" data-url="请替换成文章的网址"></div> -->
+                <!-- 多说评论框 end -->
+                <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+                <!-- <script type="text/javascript">
+                    var duoshuoQuery = {short_name:"wfyvv"};
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';ds.async = true;
+                        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0]
+                                || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script> -->
+                <!-- 多说公共JS代码 end -->
+
+
+
+            </div>
+            <div class="col-lg-3 col-md-3 w_main_right">
+                <img src="/static/img/slider/aboutphoto.png" />
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+{{template "footer.html"}}
+<!--toTop-->
+<div id="shape">
+    <div class="shapeColor">
+        <div class="shapeFly">
+        </div>
+    </div>
+</div>
+<!--snow-->
+<!--<div class="snow-container"></div>-->
+</body>
+</html>
+{{end}}

@@ -1,0 +1,37 @@
+version: '3'
+ 
+networks:
+   blog:
+ 
+services:
+   blog-app:
+     build: .
+     image: blog-app:1.0.0
+     container_name: blog-app
+     environment:
+       GIN_MODE: release
+     networks:
+       - blog
+     depends_on:
+       - blog-db
+     ports:
+       - "8080:8080"
+     expose:
+       - "8080"
+     volumes:
+       - $PWD/logs:/data/logs
+       - $PWD/images:/data/images
+     command: ["/data/wait-for-it.sh", "local.db.com:3306", "--", "/data/main", "-conf=/data/conf/app.yaml"]
+
+   blog-db:
+     image: "mysql:5.7.15"
+     container_name: blog-db
+     networks:
+       blog:
+        aliases:
+           - local.db.com
+     environment:
+       MYSQL_ROOT_PASSWORD: 123456
+     volumes:
+       - $PWD/blog.sql:/docker-entrypoint-initdb.d/blog.sql
+       - $PWD/db:/var/lib/mysql

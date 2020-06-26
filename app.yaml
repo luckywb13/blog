@@ -1,0 +1,19 @@
+server:
+  address: 0.0.0.0:8080
+
+db:
+  host: local.db.com
+  port: 3306
+  user: root
+  password: 123456
+  name: blog
+  prefix: tb_
+  maxIdle: 10
+  maxOpen: 100
+
+log:
+  FileName: ./logs/access.log
+  MaxSize: 1
+  LocalTime: true
+  Compress: true
+  Level: debug
