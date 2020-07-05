@@ -151,7 +151,7 @@ func DelArticle(c *gin.Context) {
 		ArticleId int `form:"id" binding:"min=1" `
 	}
 
-	if err := c.ShouldBindQuery(&args); err != nil {
+	if err := c.ShouldBind(&args); err != nil {
 		resp.GetResponse(c, e.INVALID_PARAMS, util.Translate(err.(validator.ValidationErrors)), nil)
 		return
 	}
